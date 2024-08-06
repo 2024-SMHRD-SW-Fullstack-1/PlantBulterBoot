@@ -9,5 +9,11 @@ import com.example.demo.model.Post;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-	 ArrayList<Post> findAllByOrderByIdxDesc();
+	
+	// 모든 게시글 가져오기
+	ArrayList<Post> findAllByOrderByIdxDesc();
+	
+	// 내 게시글
+	ArrayList<Post> findAllByMemberId(String memberId);
+	
 }

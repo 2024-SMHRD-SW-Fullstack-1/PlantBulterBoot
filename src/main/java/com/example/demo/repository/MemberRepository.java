@@ -1,8 +1,11 @@
 package com.example.demo.repository;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.model.Member;
+import com.example.demo.model.Post;
 
 public interface MemberRepository extends JpaRepository<Member, String>{
    
