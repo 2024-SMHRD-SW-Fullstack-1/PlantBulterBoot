@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.model.Comment;
 import com.example.demo.repository.CommentRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CommentService {
 	
@@ -18,5 +20,15 @@ public class CommentService {
 	public ArrayList<Comment> getCommentAll(Integer postIdx) {
         return commentRepository.findByPostIdx(postIdx);
     }
+	
+	// 해당 댓글 삭제하기
+	@Transactional
+	public void deleteCommentByIdx(Integer commentIdx) {
+        commentRepository.deleteByCommentIdx(commentIdx);
+    }
+
+	public void commentAdd(Comment comment) {
+		commentRepository.save(comment);		
+	}
 	
 }

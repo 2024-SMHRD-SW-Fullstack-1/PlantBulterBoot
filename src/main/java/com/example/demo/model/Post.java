@@ -26,6 +26,9 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "mem_id", referencedColumnName = "mem_id", insertable = false, updatable = false)
     private Member member;
+    
+    @Column(name = "mem_id", length = 50)
+    private String id;
 	
 	@Column(name = "post_img", length = 1000)
 	private String img;

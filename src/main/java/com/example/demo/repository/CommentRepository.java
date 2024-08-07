@@ -11,4 +11,6 @@ import com.example.demo.model.Comment;
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	
 	ArrayList<Comment> findByPostIdx(Integer postIdx);
+	
+	void deleteByCommentIdx(Integer commentIdx);
 }

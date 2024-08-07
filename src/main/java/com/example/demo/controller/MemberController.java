@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.codec.Base64Codec;
 import com.example.demo.model.Member;
 import com.example.demo.model.Post;
 import com.example.demo.service.MemberService;
@@ -15,7 +18,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -65,6 +67,18 @@ public class MemberController {
       System.out.println("mypage 리스트 : "+postList);
       
 	  return postList;
+   }
+   
+// 회원정보 수정
+   // 프로필 사진 서버로 가져오기
+   @PostMapping("/mypage/image")
+   public String storeImager(HttpServletRequest request) throws IOException {
+      
+      String image = request.getParameter("image");
+      System.out.println("변경된 프로필 사진: "+ image);
+      Base64Codec.makeFileWithString(image, UUID.randomUUID());
+      
+      return "save profileImg";
    }
    
 }
