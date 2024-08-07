@@ -50,6 +50,8 @@ public class PostController {
 			}
 		}
 		
+		System.out.println("post리스트들 : "+postList);
+		
 		return postList;
 	}
 	
