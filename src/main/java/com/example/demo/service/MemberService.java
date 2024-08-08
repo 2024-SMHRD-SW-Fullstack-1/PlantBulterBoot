@@ -27,6 +27,26 @@ public class MemberService {
       
       return repository.findByIdAndPw(pm.getId(),pm.getPw());
    }
+   // 프로필 사진 가져오기
+   public Member getImg(String id) {
+      Optional<Member> m = repository.findById(id);
+      Member member = null;
+      
+      if(m.isPresent()) {
+         member = m.get();
+      }
+      
+      return member;
+   }
+   // 프로필 사진 변경
+   public void editImg(Member pm) {
+      Optional<Member> m = repository.findById(pm.getId());
+      if(m.isPresent()) {
+         Member result = m.get();
+         result.setImg(pm.getImg());
+         repository.save(result);
+      }
+   }
    // 닉네임 변경
    @Transactional
    public void changeNick(Member pm) {
@@ -65,6 +85,5 @@ public class MemberService {
    
 	   return mem;
    }
-   
 
 }

@@ -33,4 +33,9 @@ public class MyplantService {
         }
         return myplantRepository.save(myPlant);
     }
+    
+	// 해당 id의 식물
+    public long getPlantCount(String id) {
+        return myplantRepository.countByMemberId(id);
+    }
 }

@@ -45,6 +45,9 @@ public class PostController {
 				String postImg = p.getImg();
 				String img = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
 				p.setImg(img);
+			}else if (p.getImg() == null) {
+				String img = Base64Codec.makeStringWithFile("src/main/resources/static/upload/noPostImg.png");
+				p.setImg(img);
 			}
 			
 			if (p.getMember().getImg() != null && p.getMember().getImg().length() < 60) {
@@ -109,6 +112,9 @@ public class PostController {
 				String postImg = result.getImg();
 				String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
 				result.setImg(img64);
+			}else if (result.getImg() == null) {
+				String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/noPostImg.png");
+				result.setImg(img64);
 			}
 			
 			if (result.getMember().getImg() != null && result.getMember().getImg().length() < 60) {
@@ -150,6 +156,9 @@ public class PostController {
 			String postImg = result.getImg();
 			String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
 			result.setImg(img64);
+		}else if (result.getImg() == null) {
+			String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/noPostImg.png");
+			result.setImg(img64);
 		}
 		
 		if (result.getMember().getImg() != null && result.getMember().getImg().length() < 60) {
@@ -188,6 +197,9 @@ public class PostController {
 			if (p.getImg() != null) {
 				String postImg = p.getImg();
 				String img = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
+				p.setImg(img);
+			}else if (p.getImg() == null) {
+				String img = Base64Codec.makeStringWithFile("src/main/resources/static/upload/noPostImg.png");
 				p.setImg(img);
 			}
 			

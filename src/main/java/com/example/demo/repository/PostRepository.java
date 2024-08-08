@@ -31,4 +31,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	// 검색한 게시글 리스트
 	ArrayList<Post> findByTitleContainingOrContentContaining(String query1, String query2);
 	
+	// 해당 id의 게시글 수
+	long countById(String id);
+	
 }

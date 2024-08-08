@@ -13,4 +13,7 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
 	ArrayList<Comment> findByPostIdx(Integer postIdx);
 	
 	void deleteByCommentIdx(Integer commentIdx);
+	
+	// 해당 id의 댓글 수
+	long countById(String id);
 }

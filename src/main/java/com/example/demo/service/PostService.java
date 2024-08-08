@@ -80,5 +80,10 @@ public class PostService {
 		
 		return originPost;
 	}
+	
+	// 해당 id의 게시글 수
+    public long getPostCount(String id) {
+        return postRepository.countById(id);
+    }
 
 }

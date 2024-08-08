@@ -31,4 +31,9 @@ public class CommentService {
 		commentRepository.save(comment);		
 	}
 	
+	// 해당 id의 댓글 수
+    public long getCommentCount(String id) {
+        return commentRepository.countById(id);
+    }
+	
 }
