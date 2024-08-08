@@ -11,7 +11,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 public class Base64Codec {
 	// Base64 -> 파일로 변환 (디코딩)
-	public static void makeFileWithString(String base64, UUID uuid) throws IOException {
+	public static String makeFileWithString(String base64, UUID uuid) throws IOException {
 		byte[] byteArray = Base64.decodeBase64(base64);
 		
 		// 파일 객체 (저장할 경로, 파일의 이름, 확장자)
@@ -20,6 +20,8 @@ public class Base64Codec {
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(byteArray);
 		fos.close();
+		
+		return uuid.toString();
 	}
 	
 	// 파일 -> Base64로 변환 (인코딩)
