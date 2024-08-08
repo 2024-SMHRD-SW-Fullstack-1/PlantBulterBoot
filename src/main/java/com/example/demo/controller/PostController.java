@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +31,9 @@ public class PostController {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@PostMapping("/post")
 	public ArrayList<Post> postList(HttpServletRequest request) throws IOException {
@@ -73,9 +77,52 @@ public class PostController {
 		return commentList;
 	}
 	
-	@PostMapping("/post/add")
-	public String postAdd(HttpServletRequest request) throws IOException {
-		String param = request.getParameter("addPost");	
+	   @PostMapping("/post/add")
+	   public Post postAdd(HttpServletRequest request) throws IOException {
+	      String param = request.getParameter("addPost");   
+	      ObjectMapper om = new ObjectMapper();
+	      
+	      String img = null;
+	      
+	      if (om.readTree(param).get("img") != null) {
+	         img = Base64Codec.makeFileWithString(om.readTree(param).get("img").asText(), UUID.randomUUID());
+	      }
+	        String id = om.readTree(param).get("id").asText();
+	        String title = om.readTree(param).get("title").asText();
+	        String content = om.readTree(param).get("content").asText();
+	        
+	        Post post = new Post();
+
+	        post.setId(id);
+	        post.setImg(img);
+	        post.setContent(content);
+	        post.setTitle(title);
+	        
+	        Member member = memberService.findById(id);
+	        post.setMember(member);
+	        
+	        Post result = postService.postAdd(post);
+	        
+	        System.out.println("추가한 결과 : " + result);
+	        
+			if (result.getImg() != null) {
+				String postImg = result.getImg();
+				String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
+				result.setImg(img64);
+			}
+			
+			if (result.getMember().getImg() != null && result.getMember().getImg().length() < 60) {
+				String memImg = result.getMember().getImg();
+				String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + memImg + ".jpg");
+				result.getMember().setImg(img64);
+			}
+	      
+	      return result;
+	   }
+	
+	@PostMapping("/post/update")
+	public Post postUpdate(HttpServletRequest request) throws IOException {
+		String param = request.getParameter("updatePost");	
 		ObjectMapper om = new ObjectMapper();
 		
 		String img = null;
@@ -83,20 +130,37 @@ public class PostController {
 		if (om.readTree(param).get("img") != null) {
 			img = Base64Codec.makeFileWithString(om.readTree(param).get("img").asText(), UUID.randomUUID());
 		}
+		int idx = Integer.parseInt(om.readTree(param).get("idx").asText());
         String id = om.readTree(param).get("id").asText();
         String title = om.readTree(param).get("title").asText();
         String content = om.readTree(param).get("content").asText();
         
         Post post = new Post();
-
+        
+        post.setIdx(idx);
         post.setId(id);
         post.setImg(img);
         post.setContent(content);
         post.setTitle(title);
+        post.setDate(LocalDateTime.now());
         
-        postService.postAdd(post);
+        Post result = postService.updatePost(post);
+        
+		if (result.getImg() != null) {
+			String postImg = result.getImg();
+			String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + postImg + ".jpg");
+			result.setImg(img64);
+		}
 		
-		return "게시글 추가 완료";
+		if (result.getMember().getImg() != null && result.getMember().getImg().length() < 60) {
+			String memImg = result.getMember().getImg();
+			String img64 = Base64Codec.makeStringWithFile("src/main/resources/static/upload/" + memImg + ".jpg");
+			result.getMember().setImg(img64);
+		}
+        
+        System.out.println("수정한 결과 : " + result);
+		
+		return result;
 	}
 	
 	@GetMapping("/post/delete/{idx}")
@@ -133,6 +197,8 @@ public class PostController {
 				p.getMember().setImg(img);
 			}
 		}
+		
+		System.out.println("검색한 게시글들 : " + postList);
 
 		return postList;
 	}

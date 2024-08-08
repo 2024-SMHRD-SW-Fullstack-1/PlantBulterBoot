@@ -55,5 +55,16 @@ public class MemberService {
       repository.deleteById(pm.getId());
    }
    
+   // 해당 id의 멤버 값 가져오기
+   public Member findById(String id) {
+	   Optional<Member> opMem = repository.findById(id);
+	   Member mem = null;
+	      if (opMem.isPresent()) {
+	          mem = opMem.get();
+	        } 
+   
+	   return mem;
+   }
+   
 
 }

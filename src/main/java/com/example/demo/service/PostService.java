@@ -25,8 +25,10 @@ public class PostService {
     }
 	
 	// 게시글 추가하기
-	public void postAdd(Post post) {
+	public Post postAdd(Post post) {
 		postRepository.save(post);
+		
+		return postRepository.findTopByIdOrderByIdxDesc(post.getId());
 	}
 	
 	// 내 게시글 가져오기
@@ -46,7 +48,7 @@ public class PostService {
 	// 게시글 조회수 증가
 	@Transactional
     public void incrementViews(int idx) {
-        Optional<Post> optionalPost = postRepository.findById(idx);
+        Optional<Post> optionalPost = postRepository.findByIdx(idx);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             post.setViews(post.getViews() + 1);
@@ -58,5 +60,25 @@ public class PostService {
 	public ArrayList<Post> searchPosts(String query) {
         return postRepository.findByTitleContainingOrContentContaining(query, query);
     }
+
+	// 게시글 수정
+	@Transactional
+	public Post updatePost(Post updatePost) {
+		Optional<Post> optionalPost = postRepository.findByIdx(updatePost.getIdx());
+		
+		Post originPost = null;
+		if(optionalPost.isPresent()) {
+			originPost = optionalPost.get();
+			if (updatePost.getImg() != null) {
+				originPost.setImg(updatePost.getImg());
+			}
+			originPost.setTitle(updatePost.getTitle());
+			originPost.setContent(updatePost.getContent());
+			originPost.setDate(updatePost.getDate());
+			postRepository.save(originPost);
+		}
+		
+		return originPost;
+	}
 
 }
