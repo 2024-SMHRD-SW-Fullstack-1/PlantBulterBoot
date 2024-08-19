@@ -106,6 +106,8 @@ public class MemberController {
    public String storeImager(HttpServletRequest request) throws IOException {
       
       String param = request.getParameter("Member");
+      
+      System.out.println("변경할 프로필 사진 멤버 : " + param);
       ObjectMapper om = new ObjectMapper();
       String img = null;
       if(om.readTree(param).get("img") != null) {
@@ -116,7 +118,7 @@ public class MemberController {
       
       service.editImg(pm);
       
-      return "save profileImg";
+      return img;
    }
    // 닉네임 변경
    @PostMapping("/mypage/nick")
